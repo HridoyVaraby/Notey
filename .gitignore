@@ -111,6 +111,6 @@ desktop.ini
 
 # Custom
 build/
-dist/
+frontend/dist/
 backend/node_modules
 frontend/node_modules
