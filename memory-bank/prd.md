@@ -46,8 +46,8 @@ The Task Manager & Note-Taking app name Notey will help users efficiently manage
 5. Settings: Users customize their experience
 
 ## 6. Deployment Strategy
-- Development Environment: Local setup using Docker for MySQL
-- Production Environment: Hosted on AWS or Vercel with a managed MySQL database
+- Development Environment: Local setup using xampp for MySQL
+- Production Environment: Hosted on Cpanel Hosting.
 
 ## 7. Success Metrics
 - Smooth user experience with minimal latency
