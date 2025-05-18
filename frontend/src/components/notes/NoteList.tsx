@@ -56,29 +56,45 @@ const NoteList = () => {
     }, 1000);
   }, []);
 
-  const addNote = (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const now = new Date().toISOString();
-    const newNote: Note = {
-      ...note,
-      id: Date.now().toString(),
-      createdAt: now,
-      updatedAt: now,
-    };
-    setNotes([newNote, ...notes]);
+  const handleAddNote = async (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      setIsLoading(true);
+      const response = await noteService.createNote(note);
+      setNotes([response.data, ...notes]);
+    } catch (err) {
+      console.error('Error adding note:', err);
+      setError('Failed to add note. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const deleteNote = (id: string) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const handleDeleteNote = async (id: string) => {
+    try {
+      setIsLoading(true);
+      await noteService.deleteNote(id);
+      setNotes(notes.filter((note) => note.id !== id));
+    } catch (err) {
+      console.error('Error deleting note:', err);
+      setError('Failed to delete note. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const updateNote = (updatedNote: Note) => {
-    setNotes(
-      notes.map((note) =>
-        note.id === updatedNote.id
-          ? { ...updatedNote, updatedAt: new Date().toISOString() }
-          : note
-      )
-    );
+  const handleUpdateNote = async (id: string, updatedNote: Partial<Note>) => {
+    try {
+      setIsLoading(true);
+      const response = await noteService.updateNote(id, updatedNote);
+      setNotes(
+        notes.map((note) => (note.id === id ? response.data : note))
+      );
+    } catch (err) {
+      console.error('Error updating note:', err);
+      setError('Failed to update note. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -54,31 +54,68 @@ const TaskList = () => {
     }, 1000);
   }, []);
 
-  const addTask = (task: Omit<Task, 'id' | 'createdAt'>) => {
-    const newTask: Task = {
-      ...task,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-    };
-    setTasks([newTask, ...tasks]);
+  const handleAddTask = async (task: Omit<Task, 'id' | 'createdAt' | 'completed'>) => {
+    try {
+      setIsLoading(true);
+      const taskData = {
+        title: task.title,
+        description: task.description,
+        dueDate: task.dueDate,
+        priority: task.priority,
+        status: 'pending'
+      };
+      const response = await taskService.createTask(taskData);
+      setTasks([response.data, ...tasks]);
+    } catch (err) {
+      console.error('Error adding task:', err);
+      setError('Failed to add task. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const toggleTaskCompletion = (id: string) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const handleToggleComplete = async (id: string, currentStatus: boolean) => {
+    try {
+      setIsLoading(true);
+      const newStatus = currentStatus ? 'pending' : 'completed';
+      const response = await taskService.updateTaskStatus(id, newStatus);
+      setTasks(
+        tasks.map((task) => (task.id === id ? response.data : task))
+      );
+    } catch (err) {
+      console.error('Error updating task status:', err);
+      setError('Failed to update task status. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const deleteTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id: string) => {
+    try {
+      setIsLoading(true);
+      await taskService.deleteTask(id);
+      setTasks(tasks.filter((task) => task.id !== id));
+    } catch (err) {
+      console.error('Error deleting task:', err);
+      setError('Failed to delete task. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const updateTask = (updatedTask: Task) => {
-    setTasks(
-      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-    );
+  const handleUpdateTask = async (id: string, updatedTask: Partial<Task>) => {
+    try {
+      setIsLoading(true);
+      const response = await taskService.updateTask(id, updatedTask);
+      setTasks(
+        tasks.map((task) => (task.id === id ? response.data : task))
+      );
+    } catch (err) {
+      console.error('Error updating task:', err);
+      setError('Failed to update task. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
