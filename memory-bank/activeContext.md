@@ -1,7 +1,7 @@
 # Active Context: Notey
 
 ## Current Work Focus
-Implementing the Notey project - a task manager and note-taking application with React frontend and MySQL database. The current focus is on developing the frontend components and integrating Tailwind CSS for styling.
+Implementing the Notey project - a task manager and note-taking application with React frontend and MySQL database. The current focus is on completing the frontend components, particularly the note-taking functionality, and preparing for backend development.
 
 ## Recent Changes
 - Created memory bank structure with core documentation files
@@ -10,17 +10,27 @@ Implementing the Notey project - a task manager and note-taking application with
 - Set up React frontend project with Vite and TypeScript
 - Installed necessary dependencies (React Router, Axios, Tailwind CSS)
 - Configured Tailwind CSS for the project
+- Updated index.css with Tailwind CSS directives
+- Created basic page components (Login, Register, NotFound)
+- Implemented task management components (TaskList, TaskItem, TaskForm)
+- Started implementing note-taking components (NoteList)
 
 ## Next Steps
-1. Update index.css with Tailwind CSS directives
-2. Create basic component structure for the application
-3. Implement user authentication system
-4. Develop task management features
-5. Implement note-taking functionality
-6. Create the Node.js/Express backend
-7. Configure MySQL database and create schema
-8. Integrate frontend with backend API
-9. Test the application
+1. Complete note-taking components (NoteItem, NoteForm)
+2. Implement user authentication system with JWT
+3. Create the Node.js/Express backend
+4. Configure MySQL database and create schema
+5. Implement API endpoints for tasks and notes
+6. Integrate frontend with backend API
+7. Test the application
+
+## Immediate Priorities
+1. Complete NoteItem.tsx component for individual note entries
+2. Create NoteForm.tsx for adding new notes
+3. Implement API calls for user authentication
+4. Set up JWT token handling
+5. Initialize Express backend server
+6. Configure MySQL connection using provided credentials
 
 ## Active Decisions and Considerations
 - Using React for frontend with Tailwind CSS for styling
