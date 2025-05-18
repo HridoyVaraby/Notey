@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import NoteItem from './NoteItem';
 import NoteForm from './NoteForm';
+import { noteService } from '../../services/noteService';
 
 interface Note {
   id: string;
@@ -10,6 +11,7 @@ interface Note {
   tags?: string[];
   createdAt: string;
   updatedAt: string;
+  data?: any;
 }
 
 const NoteList = () => {
@@ -56,11 +58,11 @@ const NoteList = () => {
     }, 1000);
   }, []);
 
-  const handleAddNote = async (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
+  const addNote = async (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
     try {
       setIsLoading(true);
       const response = await noteService.createNote(note);
-      setNotes([response.data, ...notes]);
+      setNotes([{...response, data: response.data}, ...notes]);
     } catch (err) {
       console.error('Error adding note:', err);
       setError('Failed to add note. Please try again.');
@@ -69,7 +71,7 @@ const NoteList = () => {
     }
   };
 
-  const handleDeleteNote = async (id: string) => {
+  const deleteNote = async (id: string) => {
     try {
       setIsLoading(true);
       await noteService.deleteNote(id);
@@ -82,12 +84,12 @@ const NoteList = () => {
     }
   };
 
-  const handleUpdateNote = async (id: string, updatedNote: Partial<Note>) => {
+  const updateNote = async (id: string, updatedNote: Partial<Note>) => {
     try {
       setIsLoading(true);
       const response = await noteService.updateNote(id, updatedNote);
       setNotes(
-        notes.map((note) => (note.id === id ? response.data : note))
+        notes.map((note) => (note.id === id ? {...response, data: response.data} : note))
       );
     } catch (err) {
       console.error('Error updating note:', err);
